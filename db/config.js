@@ -1,23 +1,19 @@
-const { Sequelize } = require('sequelize')
-
 const { config } = require('../config/config')
-const setupModels = require('../db/models')
 
 const USER = encodeURIComponent(config.dbUser)
 const PASSWORD = encodeURIComponent(config.dbPassword)
 
 const DB = 'postgres'
-// const DB = 'mysql'
 
 const URI = `${DB}://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`
 
-const sequelize = new Sequelize(URI, {
-  dialect: `${DB}`,
-  logging: true,
-})
-
-setupModels(sequelize)
-
-// sequelize.sync()
-
-module.exports = sequelize
+module.exports = {
+  development: {
+    url: URI,
+    dialect: DB,
+  },
+  production: {
+    url: URI,
+    dialect: DB,
+  },
+}

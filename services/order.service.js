@@ -10,12 +10,16 @@ class OrderService {
   }
 
   async find() {
-    const orders = await models.Product.findAll()
+    const orders = await models.Order.findAll({
+      include: [{ association: 'customer', include: ['user'] }],
+    })
     return orders
   }
 
   async findOne(id) {
-    const order = await models.Order.findByPk(id)
+    const order = await models.Order.findByPk(id, {
+      include: [{ association: 'customer', include: ['user'] }],
+    })
     if (!order) {
       throw boom.notFound('Order not found')
     }

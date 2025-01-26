@@ -11,7 +11,7 @@ const OrderSchema = {
     type: DataTypes.INTEGER,
   },
   customerId: {
-    field: 'category_id',
+    field: 'customer_id',
     allowNull: false,
     type: DataTypes.INTEGER,
     references: {
@@ -27,6 +27,15 @@ const OrderSchema = {
     type: DataTypes.DATE,
     field: 'created_at',
     defaultValue: Sequelize.NOW,
+  },
+  total: {
+    type: DataTypes.VIRTUAL,
+    get() {
+      if (this.items.length > 0) {
+        return this.items.reduce((acc, item) => acc + item.price * item.OrderProduct.amount, 0)
+      }
+      return 0
+    },
   },
 }
 
